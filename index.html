@@ -23,29 +23,63 @@
         <div class="container-cartao">
           <div class="cartao">
             <h3>Tarefas Totais</h3>
-            <p>15</p>
+            <p id="tarefas-totais">0</p>
           </div>
 
           <div class="cartao">
             <h3>Tarefas Pendentes</h3>
-            <p>5</p>
+            <p id="tarefas-pendentes">0</p>
           </div>
 
           <div class="cartao">
             <h3>Tarefas Concluídas</h3>
-            <p>10</p>
+            <p id="tarefas-concluidas">0</p>
           </div>
         </div>
       </section>
       <!-- Cartões -->
 
       <!-- Tarefas e criar -->
+
       <section>
+        <!-- CRIAR NOVA TAREFA -->
         <div class="tarefas">
-          <button>+ NOVA TAREFA</button>
+          <button class="btn-green" id="nova-tarefa">+ NOVA TAREFA</button>
         </div>
+        <!-- CRIAR NOVA TAREFA -->
+      </section>
+
+      <section>
+        <table class="tabela">
+          <thead>
+            <tr>
+              <th>Tarefa</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+
+          <tbody id="tarefas">
+
+          </tbody>
+        </table>
       </section>
     </main>
+
+    <!-- TAREFAS E CRIAR -->
+
+    <div class="popup-formulario">
+      <div class="popup">
+
+        <form action="#" id="formulario">
+          <h3>Nova Tarefa</h3>
+          <input type="text" name="tarefa" id="tarefa-nome" placeholder="Tarefa" />
+          <input type="submit" value="Criar" id="criar-tarefa" />
+          <button class="btn-red" id="cancelar-tarefa">Cancelar</button>
+        </form>
+      </div>
+    </div>
+
     <script src="./eoc-script.js"></script>
   </body>
 </html>
