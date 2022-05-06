@@ -96,20 +96,23 @@ const EocScript = {
     deleteTask(e) {
       e.preventDefault();
 
-      const task = e.target.parentNode.parentNode.id;
+      const _task = e.target.parentNode.parentNode.id;
+      const task = EocScript.action.slugToWithSpace(_task);
 
       const tasks = EocScript.store.get();
 
-      const filter = tasks.filter((task) => task.nome !== task);
+      const filter = tasks.filter((tsk) => tsk.nome.toLowerCase() === task);
 
-      filter.splice(filter.indexOf(task), 1);
-
-      EocScript.store.set(filter);
+      if (filter.length > 0) {
+        tasks.splice(tasks.indexOf(filter[0]), 1);
+        EocScript.store.set(tasks);
+        EocScript.action.updateAllCounters(EocScript.store.get());
+        EocScript.action.updateList(EocScript.store.get());
+      }
 
       e.target.parentNode.parentNode.remove();
 
-      EocScript.action.updateAllCounters(EocScript.store.get());
-      EocScript.action.updateList(EocScript.store.get());
+      console.log(tasks);
     },
 
     setConcluido(e) {
