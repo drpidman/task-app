@@ -9,6 +9,14 @@ const EocScript = {
   },
 
   action: {
+    removeWitheSpace(str) {
+      return str.replace(/\s/g, "-");
+    },
+
+    slugToWithSpace(str) {
+      return str.replace(/-/g, " ");
+    },
+
     openForm() {
       const form = document.querySelector(".popup-formulario");
       form.classList.add("active");
@@ -23,12 +31,12 @@ const EocScript = {
       const rootTarefas = document.getElementById("tarefas");
 
       let html = `
-        <tr id=${task.nome.toLowerCase()}>
-        <td>${task.nome}</td>
-        <td>${task.status}</td>
-        <td><button id="concluir">concluir</button> / <button id="excluir">excluir</button></td>
-        </tr>
-        `;
+          <tr id=${this.removeWitheSpace(task.nome.toLowerCase())}>
+          <td>${task.nome}</td>
+          <td>${task.status}</td>
+          <td><button id="concluir">concluir</button> / <button id="excluir">excluir</button></td>
+          </tr>
+          `;
 
       rootTarefas.innerHTML += html;
     },
@@ -107,22 +115,21 @@ const EocScript = {
     setConcluido(e) {
       e.preventDefault();
 
+      const _task = e.target.parentNode.parentNode.id;
+      const task = EocScript.action.slugToWithSpace(_task);
 
-        const task = e.target.parentNode.parentNode.id; 
-        const tasks = EocScript.store.get();
+      const tasks = EocScript.store.get();
 
-        const filter = tasks.filter((tsk) => tsk.nome === task);
+      const filter = tasks.filter((tsk) => tsk.nome.toLowerCase() === task);
 
-        tasks[tasks.indexOf(filter[0])].status = "concluido";
+      tasks[tasks.indexOf(filter[0])].status = "concluido";
 
-        EocScript.store.set(tasks);
+      EocScript.store.set(tasks);
 
-        e.target.parentNode.parentNode.remove();
+      e.target.parentNode.parentNode.remove();
 
-        EocScript.action.updateAllCounters(EocScript.store.get());
-        EocScript.action.updateList(EocScript.store.get());
-
-        console.log(filter);
+      EocScript.action.updateAllCounters(EocScript.store.get());
+      EocScript.action.updateList(EocScript.store.get());
     },
 
     updateTotalCount(tasks) {
@@ -188,6 +195,12 @@ const EocScript = {
 
     const tasks = EocScript.store.get();
 
+    document.head.innerHTML += `
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;400&display=swap" rel="stylesheet">
+    `;
+
     if (!tasks) {
       EocScript.store.set([]);
     } else {
@@ -196,12 +209,14 @@ const EocScript = {
 
       tasks.forEach((task) => {
         let html = `
-                <tr id=${task.nome.toLowerCase()}>
-                <td>${task.nome}</td>
-                <td>${task.status}</td>
-                <td><button id="concluir">concluir</button> / <button id="excluir">excluir</button></td>
-                </tr>
-                `;
+                  <tr id=${EocScript.action.removeWitheSpace(
+                    task.nome.toLowerCase()
+                  )}>
+                  <td>${task.nome}</td>
+                  <td>${task.status}</td>
+                  <td><button id="concluir">concluir</button> / <button id="excluir">excluir</button></td>
+                  </tr>
+                  `;
 
         rootTarefas.innerHTML += html;
       });
